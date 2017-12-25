@@ -120,6 +120,14 @@ class App extends Component {
 		});
 	};
 
+	toggleCardSelection = (day, isSelected) => {
+		this.setState(prevState => {
+			const days = Object.assign({}, prevState.days);
+			days[day].selected = isSelected;
+			return { days };
+		});
+	};
+
 	render() {
 		const { days } = this.state;
 		const weekDays = Object.keys(days).filter(day => days[day].available);
@@ -143,7 +151,13 @@ class App extends Component {
 				onMouseUp={this.selectionAreaDragEnd}
 			>
 				{weekDays.map(day => (
-					<Card key={day} day={day} selected={days[day].selected} />
+					<Card
+						key={day}
+						day={day}
+						selected={days[day].selected}
+						selectionAreaDimensions={dimensions}
+						toggleCardSelection={this.toggleCardSelection}
+					/>
 				))}
 				<DragSelect
 					{...{ display, top, left, bottom, right }}
