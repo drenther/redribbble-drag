@@ -20,30 +20,37 @@ class App extends Component {
 			sun: {
 				available: true,
 				selected: false,
+				instance: null,
 			},
 			mon: {
 				available: true,
 				selected: false,
+				instance: null,
 			},
 			tue: {
 				available: true,
 				selected: false,
+				instance: null,
 			},
 			wed: {
 				available: true,
 				selected: false,
+				instance: null,
 			},
 			thu: {
 				available: true,
 				selected: false,
+				instance: null,
 			},
 			fri: {
 				available: true,
 				selected: false,
+				instance: null,
 			},
 			sat: {
 				available: true,
 				selected: false,
+				instance: null,
 			},
 		},
 	};
@@ -130,7 +137,6 @@ class App extends Component {
 
 	render() {
 		const { days } = this.state;
-		const weekDays = Object.keys(days).filter(day => days[day].available);
 
 		const {
 			dragging,
@@ -150,14 +156,16 @@ class App extends Component {
 				onMouseMove={this.selectionAreaDrag}
 				onMouseUp={this.selectionAreaDragEnd}
 			>
-				{weekDays.map(day => (
+				{Object.keys(days).map(day => (
 					<div className="card-container" key={day}>
-						<Card
-							day={day}
-							selected={days[day].selected}
-							selectionAreaDimensions={dimensions}
-							toggleCardSelection={this.toggleCardSelection}
-						/>
+						{days[day].available && (
+							<Card
+								day={day}
+								selected={days[day].selected}
+								selectionAreaDimensions={dimensions}
+								toggleCardSelection={this.toggleCardSelection}
+							/>
+						)}
 					</div>
 				))}
 				<DragSelect
