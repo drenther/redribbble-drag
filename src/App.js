@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { listen } from 'popmotion';
+
 import DragSelect from './components/DragSelect';
 import Card from './components/Card';
-
 import { getCurrentDimensions, getCoords } from './utils/helpers';
+import { pullEndAnimation } from './utils/animations';
 
 class App extends Component {
 	initialState = {
@@ -53,9 +55,36 @@ class App extends Component {
 				instance: null,
 			},
 		},
+		card: {
+			pulling: false,
+			currentCard: '',
+			pointerInstance: null,
+		},
 	};
 
 	state = this.initialState;
+
+	componentDidMount() {
+		// listener on document for listening to mouseup when pulling true
+		this.pullEndListener = listen(document, 'mouseup').start(e => {
+			const state = Object.assign({}, this.state);
+			const { pulling, currentCard, pointerInstance } = state.card;
+			if (pulling && currentCard) {
+				const primaryInstance = state.days[currentCard].instance;
+				const allInstances = Object.keys(state.days)
+					.filter(d => state.days[d].selected)
+					.map(day => state.days[day].instance);
+
+				pullEndAnimation(primaryInstance, pointerInstance, allInstances);
+
+				this.resetSelection();
+			}
+		});
+	}
+
+	componentWillUnmount() {
+		this.pullEndListener.stop();
+	}
 
 	selectionAreaDragStart = e => {
 		const isSourceApp = [...e.target.classList].includes('app');
@@ -135,6 +164,35 @@ class App extends Component {
 		});
 	};
 
+	notifyPullStart = (day, pointerInstance) => {
+		const newCardState = {
+			pulling: true,
+			currentCard: day,
+			pointerInstance,
+		};
+
+		this.setState({ card: newCardState });
+	};
+
+	registerStylerInstance = (day, instance) => {
+		this.setState(prevState => {
+			const newState = Object.assign({}, prevState);
+			newState.days[day].instance = instance;
+
+			return newState;
+		});
+	};
+
+	resetSelection = () => {
+		this.setState(prevState => {
+			const days = Object.assign({}, prevState.days);
+			Object.keys(days).forEach(day => {
+				days[day].selected = false;
+			});
+			return { days, card: this.initialState.card };
+		});
+	};
+
 	render() {
 		const { days } = this.state;
 
@@ -160,10 +218,12 @@ class App extends Component {
 					<div className="card-container" key={day}>
 						{days[day].available && (
 							<Card
-								day={day}
+								{...{ day, days }}
 								selected={days[day].selected}
 								selectionAreaDimensions={dimensions}
 								toggleCardSelection={this.toggleCardSelection}
+								notifyPullStart={this.notifyPullStart}
+								registerStylerInstance={this.registerStylerInstance}
 							/>
 						)}
 					</div>

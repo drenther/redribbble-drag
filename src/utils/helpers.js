@@ -1,3 +1,11 @@
+export const dragResistance = (main, alt, allDays) => {
+	if (main === alt) return 1;
+	const mainIndex = allDays.indexOf(main);
+	const altIndex = allDays.indexOf(alt);
+	const resistance = parseFloat(`0.${10 - Math.abs(mainIndex - altIndex)}`);
+	return resistance;
+};
+
 export const getCurrentDimensions = (app, startX, startY, endX, endY) => {
 	const { height, width } = app.getBoundingClientRect();
 	let top, left, bottom, right;
