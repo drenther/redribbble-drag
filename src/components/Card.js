@@ -27,12 +27,6 @@ class Card extends Component {
 			);
 
 			toggleCardSelection(day, isSelected);
-
-			if (isSelected) {
-				console.log(`${nextProps.day} selected`);
-			} else {
-				console.log(`${nextProps.day} unselected`);
-			}
 		}
 	}
 

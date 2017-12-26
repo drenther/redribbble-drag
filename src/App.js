@@ -151,13 +151,14 @@ class App extends Component {
 				onMouseUp={this.selectionAreaDragEnd}
 			>
 				{weekDays.map(day => (
-					<Card
-						key={day}
-						day={day}
-						selected={days[day].selected}
-						selectionAreaDimensions={dimensions}
-						toggleCardSelection={this.toggleCardSelection}
-					/>
+					<div className="card-container" key={day}>
+						<Card
+							day={day}
+							selected={days[day].selected}
+							selectionAreaDimensions={dimensions}
+							toggleCardSelection={this.toggleCardSelection}
+						/>
+					</div>
 				))}
 				<DragSelect
 					{...{ display, top, left, bottom, right }}

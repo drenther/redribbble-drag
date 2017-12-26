@@ -21,7 +21,6 @@ body {
 
 .card,
 .selectable {
-	border-radius: 10px;
 	box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.05), 0 2px 9px 0 rgba(0, 0, 0, 0.2);
 }
 
@@ -51,14 +50,23 @@ body {
 	padding: 60px;
 }
 
+.card-container,
 .selectable {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
-	background: rgba(128, 0, 128, 0.3);
 	height: 200px;
 	width: 120px;
+	border-radius: 10px;
+}
+
+.card-container {
+	background: rgba(0, 0, 0, 0.25);
+}
+
+.selectable {
+	background: rgba(128, 0, 128, 0.3);
 }
 .selectable.selected {
 	border: 2px solid rgba(128, 0, 128, 0.7);
