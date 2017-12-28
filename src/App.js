@@ -214,6 +214,9 @@ class App extends Component {
 				onMouseMove={this.selectionAreaDrag}
 				onMouseUp={this.selectionAreaDragEnd}
 			>
+				<div className="desc typography">
+					A simple drag and select interface prototype
+				</div>
 				{Object.keys(days).map(day => (
 					<div className="card-container" key={day}>
 						{days[day].available && (
