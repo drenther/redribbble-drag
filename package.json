@@ -1,20 +1,21 @@
 {
-  "name": "989v598m0y",
-  "description": "",
-  "version": "0.0.0",
-  "dependencies": {
-    "react-dom": "latest",
-    "react": "latest",
-    "prop-types": "latest",
-    "popmotion": "latest"
-  },
-  "devDependencies": {
-    "react-scripts": "1.0.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  }
+	"name": "989v598m0y",
+	"description": "",
+	"version": "0.0.0",
+	"dependencies": {
+		"react-dom": "16.2.0",
+		"react": "16.2.0",
+		"prop-types": "15.6.0",
+		"popmotion": "8.1.3",
+		"lodash.isequal": "4.5.0"
+	},
+	"devDependencies": {
+		"react-scripts": "1.0.0"
+	},
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "react-scripts test --env=jsdom",
+		"eject": "react-scripts eject"
+	}
 }
