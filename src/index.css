@@ -104,12 +104,17 @@ body {
 #trashbox {
 	visibility: visible;
 	opacity: 1;
-	transition: all 0.25s ease-in;
+	height: 80px;
+	width: 80px;
+	transition: transform 0.25s ease-in-out, opacity 0.35s ease-in,
+		visibility 0.35s ease-in;
+	z-index: 10;
 }
 
 #trashbox.hidden {
 	visibility: hidden;
 	opacity: 0;
+	transform: scale(0) translateY(200px);
 }
 
 /*# sourceMappingURL=index.css.map */
