@@ -61,6 +61,9 @@ class App extends Component {
 			currentCard: '',
 			pointerInstance: null,
 		},
+		trash: {
+			open: false,
+		},
 	};
 
 	state = this.initialState;
@@ -78,7 +81,11 @@ class App extends Component {
 
 				pullEndAnimation(primaryInstance, pointerInstance, allInstances);
 
-				this.resetSelection();
+				if (state.trash.open) {
+					this.unmountDays();
+				} else {
+					this.resetSelection();
+				}
 			}
 		});
 	}
@@ -89,10 +96,12 @@ class App extends Component {
 
 	selectionAreaDragStart = e => {
 		const source = e.target;
+		const ifClickSource = ifSource.bind(null, source);
 		const correctSource =
-			ifSource(source, 'app') ||
-			ifSource(source, 'container') ||
-			ifSource(source, 'trash');
+			ifClickSource('app') ||
+			ifClickSource('container') ||
+			ifClickSource('trash') ||
+			ifClickSource('desc');
 		const isLeftClick = e.button === 0;
 
 		if (correctSource && isLeftClick) {
@@ -198,6 +207,41 @@ class App extends Component {
 		});
 	};
 
+	unmountDays = () => {
+		this.setState(prevState => {
+			const days = prevState.days;
+			Object.keys(days).forEach(day => {
+				const currentDay = days[day];
+				if (currentDay.selected) {
+					currentDay.available = false;
+				}
+			});
+			return { days, trash: { open: false }, card: this.initialState.card };
+		});
+	};
+
+	enterTrashZone = () => {
+		this.setState(prevState => {
+			const { pulling } = prevState.card;
+			if (pulling) {
+				return { trash: { open: true } };
+			} else {
+				return null;
+			}
+		});
+	};
+
+	exitTrashZone = () => {
+		this.setState(prevState => {
+			const { pulling } = prevState.card;
+			if (pulling) {
+				return { trash: { open: false } };
+			} else {
+				return null;
+			}
+		});
+	};
+
 	render() {
 		const { days } = this.state;
 
@@ -244,7 +288,11 @@ class App extends Component {
 					{...{ display, top, left, bottom, right }}
 					selectionAreaRef={el => (this.selectionArea = el)}
 				/>
-				<Trash pulling={pulling} />
+				<Trash
+					pulling={pulling}
+					enterTrashZone={this.enterTrashZone}
+					exitTrashZone={this.exitTrashZone}
+				/>
 			</div>
 		);
 	}

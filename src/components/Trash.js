@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 class Trash extends Component {
 	static propTypes = {
 		pulling: PropTypes.bool.isRequired,
+		enterTrashZone: PropTypes.func.isRequired,
+		exitTrashZone: PropTypes.func.isRequired,
 	};
 
 	render() {
-		const { pulling } = this.props;
+		const { pulling, exitTrashZone, enterTrashZone } = this.props;
 		return (
 			<div className="trash">
 				<svg
@@ -17,6 +19,8 @@ class Trash extends Component {
 					viewBox="0 0 92 92"
 					id="trashbox"
 					className={pulling ? '' : 'hidden'}
+					onMouseEnter={enterTrashZone}
+					onMouseLeave={exitTrashZone}
 				>
 					<defs>
 						<clipPath id="_clipPath_Bv1RGNDO4QjzHgE8BI9Mx4EhtSIPt6jo">
