@@ -47,14 +47,20 @@ body {
 }
 
 #root,
-.app {
+.app,
+.container {
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	justify-content: space-around;
 	align-items: space-around;
 	height: 100%;
 	width: 100%;
 	position: relative;
+}
+
+.container {
+	flex-direction: row;
+	height: 300px;
 }
 
 .app {
@@ -87,6 +93,23 @@ body {
 	position: absolute;
 	border: 2px dotted #000;
 	border-radius: 10px;
+}
+
+.trash {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#trashbox {
+	visibility: visible;
+	opacity: 1;
+	transition: all 0.25s ease-in;
+}
+
+#trashbox.hidden {
+	visibility: hidden;
+	opacity: 0;
 }
 
 /*# sourceMappingURL=index.css.map */

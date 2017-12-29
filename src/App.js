@@ -3,7 +3,8 @@ import { listen } from 'popmotion';
 
 import DragSelect from './components/DragSelect';
 import Card from './components/Card';
-import { getCurrentDimensions, getCoords } from './utils/helpers';
+import Trash from './components/Trash';
+import { getCurrentDimensions, getCoords, ifSource } from './utils/helpers';
 import { pullEndAnimation } from './utils/animations';
 
 class App extends Component {
@@ -87,10 +88,14 @@ class App extends Component {
 	}
 
 	selectionAreaDragStart = e => {
-		const isSourceApp = [...e.target.classList].includes('app');
+		const source = e.target;
+		const correctSource =
+			ifSource(source, 'app') ||
+			ifSource(source, 'container') ||
+			ifSource(source, 'trash');
 		const isLeftClick = e.button === 0;
 
-		if (isSourceApp && isLeftClick) {
+		if (correctSource && isLeftClick) {
 			const { x, y } = getCoords(this.app, e.clientX, e.clientY);
 			const newDimensions = getCurrentDimensions(this.app, x, y, x, y);
 
@@ -99,7 +104,7 @@ class App extends Component {
 					{},
 					prevState.selectionArea,
 					newDimensions,
-					{ dragging: true },
+					{ dragging: true }
 				);
 				return { selectionArea: newSelectionArea };
 			});
@@ -116,7 +121,7 @@ class App extends Component {
 					startX,
 					startY,
 					x,
-					y,
+					y
 				);
 
 				const DOMRect = this.selectionArea.getBoundingClientRect();
@@ -131,7 +136,7 @@ class App extends Component {
 					{},
 					prevState.selectionArea,
 					{ dimensions },
-					newDimensions,
+					newDimensions
 				);
 
 				return { selectionArea: newSelectionArea };
@@ -206,6 +211,8 @@ class App extends Component {
 		} = this.state.selectionArea;
 		const display = dragging ? 'initial' : 'none';
 
+		const { pulling } = this.state.card;
+
 		return (
 			<div
 				className="app"
@@ -217,24 +224,27 @@ class App extends Component {
 				<div className="desc typography">
 					A simple drag and select interface prototype
 				</div>
-				{Object.keys(days).map(day => (
-					<div className="card-container" key={day}>
-						{days[day].available && (
-							<Card
-								{...{ day, days }}
-								selected={days[day].selected}
-								selectionAreaDimensions={dimensions}
-								toggleCardSelection={this.toggleCardSelection}
-								notifyPullStart={this.notifyPullStart}
-								registerStylerInstance={this.registerStylerInstance}
-							/>
-						)}
-					</div>
-				))}
+				<div className="container">
+					{Object.keys(days).map(day => (
+						<div className="card-container" key={day}>
+							{days[day].available && (
+								<Card
+									{...{ day, days }}
+									selected={days[day].selected}
+									selectionAreaDimensions={dimensions}
+									toggleCardSelection={this.toggleCardSelection}
+									notifyPullStart={this.notifyPullStart}
+									registerStylerInstance={this.registerStylerInstance}
+								/>
+							)}
+						</div>
+					))}
+				</div>
 				<DragSelect
 					{...{ display, top, left, bottom, right }}
 					selectionAreaRef={el => (this.selectionArea = el)}
 				/>
+				<Trash pulling={pulling} />
 			</div>
 		);
 	}

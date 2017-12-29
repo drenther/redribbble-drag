@@ -6,6 +6,9 @@ export const dragResistance = (main, alt, allDays) => {
 	return resistance;
 };
 
+export const ifSource = (source, className) =>
+	[...source.classList].includes(className);
+
 export const getCurrentDimensions = (app, startX, startY, endX, endY) => {
 	const { height, width } = app.getBoundingClientRect();
 	let top, left, bottom, right;

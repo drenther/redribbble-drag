@@ -38,18 +38,3 @@ class DragSelect extends Component {
 }
 
 export default DragSelect;
-
-/*
-
-import React, { Component } from 'react';
-
-class ComponentName extends Component {
-	render() {
-		return <div />;
-	}
-}
-
-export default ComponentName;
-
-
-*/
