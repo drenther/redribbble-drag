@@ -1,0 +1,18 @@
+<svg width="76" height="22" viewBox="0 0 76 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Cover</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(88 162)">
+<g id="Cover">
+<g id="Vector">
+<use xlink:href="#path0_stroke" transform="translate(-84 -144)"/>
+</g>
+<g id="Vector">
+<use xlink:href="#path1_stroke" transform="translate(-60 -158)"/>
+</g>
+</g>
+</g>
+<defs>
+<path id="path0_stroke" d="M 0 -3.5C -1.933 -3.5 -3.5 -1.933 -3.5 0C -3.5 1.933 -1.933 3.5 0 3.5L 0 -3.5ZM 68 3.5C 69.933 3.5 71.5 1.933 71.5 0C 71.5 -1.933 69.933 -3.5 68 -3.5L 68 3.5ZM 0 3.5L 68 3.5L 68 -3.5L 0 -3.5L 0 3.5Z"/>
+<path id="path1_stroke" d="M -3.5 14C -3.5 15.933 -1.933 17.5 0 17.5C 1.933 17.5 3.5 15.933 3.5 14L -3.5 14ZM 0 0L 0 -3.5C -1.933 -3.5 -3.5 -1.933 -3.5 7.77156e-16L 0 0ZM 20 0L 23.5 0C 23.5 -1.933 21.933 -3.5 20 -3.5L 20 0ZM 16.5 14C 16.5 15.933 18.067 17.5 20 17.5C 21.933 17.5 23.5 15.933 23.5 14L 16.5 14ZM 3.5 14L 3.5 0L -3.5 0L -3.5 14L 3.5 14ZM 0 3.5L 20 3.5L 20 -3.5L 0 -3.5L 0 3.5ZM 16.5 0L 16.5 14L 23.5 14L 23.5 0L 16.5 0Z"/>
+</defs>
+</svg>

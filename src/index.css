@@ -3,6 +3,7 @@
 	border: none;
 	padding: 0;
 	box-sizing: border-box;
+	user-select: none;
 }
 
 html,
@@ -89,6 +90,10 @@ body {
 	border: 2px solid rgba(128, 0, 128, 0.7);
 }
 
+.selectable.selected.pulling {
+	cursor: crosshair;
+}
+
 .drag-select {
 	position: absolute;
 	border: 2px dotted #000;
@@ -97,24 +102,45 @@ body {
 
 .trash {
 	display: flex;
+	flex-direction: row;
 	justify-content: center;
-	align-items: center;
+	align-items: flex-end;
+	height: 160px;
 }
 
 #trashbox {
 	visibility: visible;
 	opacity: 1;
-	height: 80px;
-	width: 80px;
+	height: 90px;
+	width: 90px;
 	transition: transform 0.25s ease-in-out, opacity 0.35s ease-in,
 		visibility 0.35s ease-in;
 	z-index: 10;
+	cursor: crosshair;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
 }
 
 #trashbox.hidden {
 	visibility: hidden;
 	opacity: 0;
 	transform: scale(0) translateY(200px);
+}
+
+#cover,
+#body {
+	transform-origin: 100%;
+	transition: transform 0.25s ease;
+}
+
+#cover.open {
+	transform: rotate(15deg);
+}
+
+#body.open {
+	transform: rotate(-15deg);
 }
 
 /*# sourceMappingURL=index.css.map */

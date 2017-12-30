@@ -44,7 +44,7 @@ class Card extends Component {
 
 				const pointerInstance = pullStartAnimation(
 					primaryInstance,
-					allInstancesWithResistance,
+					allInstancesWithResistance
 				);
 
 				notifyPullStart(day, pointerInstance);
@@ -63,7 +63,7 @@ class Card extends Component {
 			const elDimensions = this.card.getBoundingClientRect();
 			const isSelected = checkIfSelected(
 				nextProps.selectionAreaDimensions,
-				elDimensions,
+				elDimensions
 			);
 
 			toggleCardSelection(day, isSelected);

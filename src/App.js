@@ -101,7 +101,8 @@ class App extends Component {
 			ifClickSource('app') ||
 			ifClickSource('container') ||
 			ifClickSource('trash') ||
-			ifClickSource('desc');
+			ifClickSource('desc') ||
+			ifClickSource('card-container');
 		const isLeftClick = e.button === 0;
 
 		if (correctSource && isLeftClick) {
@@ -221,6 +222,7 @@ class App extends Component {
 	};
 
 	enterTrashZone = () => {
+		console.log('enter');
 		this.setState(prevState => {
 			const { pulling } = prevState.card;
 			if (pulling) {
@@ -232,18 +234,12 @@ class App extends Component {
 	};
 
 	exitTrashZone = () => {
-		this.setState(prevState => {
-			const { pulling } = prevState.card;
-			if (pulling) {
-				return { trash: { open: false } };
-			} else {
-				return null;
-			}
-		});
+		this.setState({ trash: { open: false } });
 	};
 
 	render() {
-		const { days } = this.state;
+		const state = this.state;
+		const { days } = state;
 
 		const {
 			dragging,
@@ -252,10 +248,11 @@ class App extends Component {
 			bottom,
 			right,
 			dimensions,
-		} = this.state.selectionArea;
+		} = state.selectionArea;
 		const display = dragging ? 'initial' : 'none';
 
-		const { pulling } = this.state.card;
+		const { pulling } = state.card;
+		const { open } = state.trash;
 
 		return (
 			<div
@@ -289,7 +286,7 @@ class App extends Component {
 					selectionAreaRef={el => (this.selectionArea = el)}
 				/>
 				<Trash
-					pulling={pulling}
+					{...{ pulling, open }}
 					enterTrashZone={this.enterTrashZone}
 					exitTrashZone={this.exitTrashZone}
 				/>
