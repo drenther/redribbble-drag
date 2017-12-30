@@ -4,7 +4,12 @@ import { listen } from 'popmotion';
 import DragSelect from './components/DragSelect';
 import Card from './components/Card';
 import Trash from './components/Trash';
-import { getCurrentDimensions, getCoords, ifSource } from './utils/helpers';
+import {
+	getCurrentDimensions,
+	getCoords,
+	ifSource,
+	relativePosition,
+} from './utils/helpers';
 import { pullEndAnimation, unmountAnimation } from './utils/animations';
 
 class App extends Component {
@@ -209,12 +214,18 @@ class App extends Component {
 	unmountDays = () => {
 		const state = Object.assign({}, this.state);
 		const days = state.days;
-		const allSelectedDays = Object.keys(days).filter(day => days[day].selected);
-		const allSelectedInstances = allSelectedDays.map(day => days[day].instance);
+		const allDays = Object.keys(days);
+		const day = state.card.currentCard;
+		const allSelectedDays = allDays.filter(day => days[day].selected);
+
+		const allSelectedInstances = allSelectedDays.map(d => {
+			const relative = relativePosition(day, d, allDays);
+			return [days[d].instance, relative];
+		});
 
 		unmountAnimation(allSelectedInstances).start({
 			update: arr =>
-				arr.forEach((scale, i) => allSelectedInstances[i].update(scale)),
+				arr.forEach((values, i) => allSelectedInstances[i][0].update(values)),
 			complete: () => {
 				this.unmountDaysStateUpdate();
 			},
@@ -234,7 +245,6 @@ class App extends Component {
 	};
 
 	enterTrashZone = () => {
-		console.log('entered');
 		this.setState(prevState => {
 			const { pulling } = prevState.card;
 			if (pulling) {
@@ -247,7 +257,6 @@ class App extends Component {
 	};
 
 	exitTrashZone = () => {
-		console.log('exited');
 		this.setState(prevState => {
 			const trash = Object.assign({}, prevState.trash, { open: false });
 			return { trash };

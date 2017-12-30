@@ -6,6 +6,12 @@ export const dragResistance = (main, alt, allDays) => {
 	return resistance;
 };
 
+export const relativePosition = (main, alt, allDays) => {
+	const mainIndex = allDays.indexOf(main);
+	const altIndex = allDays.indexOf(alt);
+	return mainIndex - altIndex;
+};
+
 export const ifSource = (source, className) =>
 	[...source.classList].includes(className);
 

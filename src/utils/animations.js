@@ -40,14 +40,26 @@ export const pullStartAnimation = (
 };
 
 export const unmountAnimation = allInstances => {
-	const tweens = allInstances.map(i =>
-		tween({
-			from: { scale: 1 },
-			to: { scale: 0 },
+	console.log(allInstances);
+	const tweens = allInstances.map(i => {
+		const [instance, relative] = i;
+		const { x, y } = instance.get();
+
+		return tween({
+			from: {
+				x,
+				y,
+				scale: 1,
+			},
+			to: {
+				x: x + 200 * relative,
+				y: y + 80 * Math.abs(relative),
+				scale: 0,
+			},
 			ease: easing.easeIn,
 			duration: 300,
-		})
-	);
+		});
+	});
 
-	return stagger(tweens, 100);
+	return stagger(tweens, 0);
 };
