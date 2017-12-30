@@ -7,18 +7,13 @@ class Trash extends Component {
 		open: PropTypes.bool.isRequired,
 		enterTrashZone: PropTypes.func.isRequired,
 		exitTrashZone: PropTypes.func.isRequired,
-		registerTrashCoords: PropTypes.func.isRequired,
 	};
-
-	componentDidMount() {
-		this.props.registerTrashCoords(this.trash);
-	}
 
 	render() {
 		const { pulling, open, exitTrashZone, enterTrashZone } = this.props;
 		const openClass = open ? 'open' : '';
 		return (
-			<div className="trash" ref={el => (this.trash = el)}>
+			<div className="trash">
 				<div
 					id="trashbox"
 					className={pulling ? '' : 'hidden'}

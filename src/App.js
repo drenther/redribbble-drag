@@ -63,14 +63,12 @@ class App extends Component {
 		},
 		trash: {
 			open: false,
-			trashCoords: null,
 		},
 	};
 
 	state = this.initialState;
 
 	componentDidMount() {
-		// listener on document for listening to mouseup when pulling true
 		this.pullEndListener = listen(document, 'mouseup').start(e => {
 			const state = Object.assign({}, this.state);
 			const { pulling, currentCard, pointerInstance } = state.card;
@@ -213,11 +211,10 @@ class App extends Component {
 		const days = state.days;
 		const allSelectedDays = Object.keys(days).filter(day => days[day].selected);
 		const allSelectedInstances = allSelectedDays.map(day => days[day].instance);
-		const trashStyler = state.trash.trashCoords;
 
-		unmountAnimation(allSelectedInstances, trashStyler).start({
+		unmountAnimation(allSelectedInstances).start({
 			update: arr =>
-				arr.forEach(({ x, y }, i) => allSelectedInstances[i].update({ x, y })),
+				arr.forEach((scale, i) => allSelectedInstances[i].update(scale)),
 			complete: () => {
 				this.unmountDaysStateUpdate();
 			},
@@ -236,14 +233,8 @@ class App extends Component {
 		});
 	};
 
-	registerTrashCoords = trashCoords => {
-		this.setState(prevState => {
-			const trash = Object.assign({}, prevState.trash, { trashCoords });
-			return { trash };
-		});
-	};
-
 	enterTrashZone = () => {
+		console.log('entered');
 		this.setState(prevState => {
 			const { pulling } = prevState.card;
 			if (pulling) {
@@ -256,6 +247,7 @@ class App extends Component {
 	};
 
 	exitTrashZone = () => {
+		console.log('exited');
 		this.setState(prevState => {
 			const trash = Object.assign({}, prevState.trash, { open: false });
 			return { trash };
@@ -312,7 +304,6 @@ class App extends Component {
 				/>
 				<Trash
 					{...{ pulling, open }}
-					registerTrashCoords={this.registerTrashCoords}
 					enterTrashZone={this.enterTrashZone}
 					exitTrashZone={this.exitTrashZone}
 				/>

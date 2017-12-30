@@ -1,5 +1,4 @@
 import { spring, pointer, tween, stagger, easing } from 'popmotion';
-import { getMidPoint } from '../utils/helpers';
 
 export const pullEndAnimation = (
 	primaryInstance,
@@ -40,21 +39,15 @@ export const pullStartAnimation = (
 	return pointerInstance;
 };
 
-export const unmountAnimation = (allInstances, trashXY) => {
-	const coords = trashXY.getBoundingClientRect();
-	console.log(coords);
-	const tweens = allInstances.map(i => {
-		const { x, y } = i.get();
-		const to = {
-			x: getMidPoint(coords.x, coords.width) - x,
-			y: getMidPoint(coords.y, coords.height),
-		};
-		return tween({
-			from: { x, y },
-			to,
-			ease: { x: easing.easeOut, y: easing.easeIn },
-		});
-	});
-	// console.table(tweens);
+export const unmountAnimation = allInstances => {
+	const tweens = allInstances.map(i =>
+		tween({
+			from: { scale: 1 },
+			to: { scale: 0 },
+			ease: easing.easeIn,
+			duration: 300,
+		})
+	);
+
 	return stagger(tweens, 100);
 };
