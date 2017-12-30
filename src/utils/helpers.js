@@ -9,6 +9,8 @@ export const dragResistance = (main, alt, allDays) => {
 export const ifSource = (source, className) =>
 	[...source.classList].includes(className);
 
+export const getMidPoint = (start, whole) => Math.round(start - whole / 2);
+
 export const getCurrentDimensions = (app, startX, startY, endX, endY) => {
 	const { height, width } = app.getBoundingClientRect();
 	let top, left, bottom, right;

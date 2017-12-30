@@ -5,7 +5,7 @@ import DragSelect from './components/DragSelect';
 import Card from './components/Card';
 import Trash from './components/Trash';
 import { getCurrentDimensions, getCoords, ifSource } from './utils/helpers';
-import { pullEndAnimation } from './utils/animations';
+import { pullEndAnimation, unmountAnimation } from './utils/animations';
 
 class App extends Component {
 	initialState = {
@@ -63,6 +63,7 @@ class App extends Component {
 		},
 		trash: {
 			open: false,
+			trashCoords: null,
 		},
 	};
 
@@ -79,12 +80,11 @@ class App extends Component {
 					.filter(d => state.days[d].selected)
 					.map(day => state.days[day].instance);
 
-				pullEndAnimation(primaryInstance, pointerInstance, allInstances);
-
 				if (state.trash.open) {
 					this.unmountDays();
 				} else {
 					this.resetSelection();
+					pullEndAnimation(primaryInstance, pointerInstance, allInstances);
 				}
 			}
 		});
@@ -209,24 +209,46 @@ class App extends Component {
 	};
 
 	unmountDays = () => {
+		const state = Object.assign({}, this.state);
+		const days = state.days;
+		const allSelectedDays = Object.keys(days).filter(day => days[day].selected);
+		const allSelectedInstances = allSelectedDays.map(day => days[day].instance);
+		const trashStyler = state.trash.trashCoords;
+
+		unmountAnimation(allSelectedInstances, trashStyler).start({
+			update: arr =>
+				arr.forEach(({ x, y }, i) => allSelectedInstances[i].update({ x, y })),
+			complete: () => {
+				this.unmountDaysStateUpdate();
+			},
+		});
+	};
+
+	unmountDaysStateUpdate = () => {
 		this.setState(prevState => {
 			const days = prevState.days;
-			Object.keys(days).forEach(day => {
-				const currentDay = days[day];
-				if (currentDay.selected) {
-					currentDay.available = false;
-				}
-			});
-			return { days, trash: { open: false }, card: this.initialState.card };
+			const allSelectedDays = Object.keys(days).filter(
+				day => days[day].selected
+			);
+			allSelectedDays.forEach(day => (days[day].available = false));
+			const trash = Object.assign({}, prevState.trash, { open: false });
+			return { days, trash, card: this.initialState.card };
+		});
+	};
+
+	registerTrashCoords = trashCoords => {
+		this.setState(prevState => {
+			const trash = Object.assign({}, prevState.trash, { trashCoords });
+			return { trash };
 		});
 	};
 
 	enterTrashZone = () => {
-		console.log('enter');
 		this.setState(prevState => {
 			const { pulling } = prevState.card;
 			if (pulling) {
-				return { trash: { open: true } };
+				const trash = Object.assign({}, prevState.trash, { open: true });
+				return { trash };
 			} else {
 				return null;
 			}
@@ -234,7 +256,10 @@ class App extends Component {
 	};
 
 	exitTrashZone = () => {
-		this.setState({ trash: { open: false } });
+		this.setState(prevState => {
+			const trash = Object.assign({}, prevState.trash, { open: false });
+			return { trash };
+		});
 	};
 
 	render() {
@@ -287,6 +312,7 @@ class App extends Component {
 				/>
 				<Trash
 					{...{ pulling, open }}
+					registerTrashCoords={this.registerTrashCoords}
 					enterTrashZone={this.enterTrashZone}
 					exitTrashZone={this.exitTrashZone}
 				/>
